@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  web:
+    container_name: api
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./:/app
+
+  postgres:
+    container_name: postgres
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "ewallet"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Hsahgd17yhsBhas"
+      TZ: Europe/Moscow
+    # volumes:
+    #   ./pg_data:/var/lib/postgresql/data
+    #  - .:/docker-entrypoint-initdb.d
+    # volumes:
+    #   - ./pgdata:/var/lib/postgresql/data
+
+volumes:
+  pg_data:

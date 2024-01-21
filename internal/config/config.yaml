@@ -1,0 +1,3 @@
+listenAddr: 0.0.0.0:3000
+db:
+  url: host=postgres port=5432 user=postgres password=Hsahgd17yhsBhas dbname=ewallet sslmode=disable TimeZone=Europe/Moscow
