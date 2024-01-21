@@ -50,18 +50,18 @@ type WalletRequest struct {
 
 type Wallet struct {
 	ID       string            
-	WalletId string			`json:"id"`
-	Balance decimal.Decimal `json:"balance"`
+	WalletId string          `json:"id"`
+	Balance decimal.Decimal  `json:"balance"`
 	Created_at time.Time    
 	Updated_at time.Time   
 }
 
 type Transaction struct {
-	ID      string          `json:"id"`
-	From    string          `json:"from"`
-	To  	string          `json:"to"`
-	Amount  decimal.Decimal `json:"amount"`
-	Time    time.Time       `json:"transfer_time"`
+	ID      string           `json:"id"`
+	From    string           `json:"from"`
+	To  	string           `json:"to"`
+	Amount  decimal.Decimal  `json:"amount"`
+	Time    time.Time        `json:"transfer_time"`
 }
 
 type HistoryResponse struct {
@@ -72,8 +72,8 @@ type HistoryResponse struct {
 }
 
 type TransactionRequest struct {
-	ToID  	string          `json:"to"`
-	Amount  decimal.Decimal `json:"amount"`
+	ToID  	string           `json:"to"`
+	Amount  decimal.Decimal  `json:"amount"`
 }
 
 
