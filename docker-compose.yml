@@ -25,11 +25,9 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "Hsahgd17yhsBhas"
       TZ: Europe/Moscow
-    # volumes:
-    #   ./pg_data:/var/lib/postgresql/data
-    #  - .:/docker-entrypoint-initdb.d
-    # volumes:
-    #   - ./pgdata:/var/lib/postgresql/data
+    volumes:
+      ./pg_data:/var/lib/postgresql/data
+
 
 volumes:
   pg_data:
