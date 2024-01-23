@@ -18,8 +18,6 @@
 
 ## Tech
 
-Укажите основные технологии и библиотеки, используемые в проекте.
-
 - Postgres, для database/sql используется драйвер pq (github.com/lib/pq)  
 - mux (github.com/gorilla/mux)
 - docker
