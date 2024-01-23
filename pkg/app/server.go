@@ -33,8 +33,7 @@ func (s *APIServer) RunServer() {
 	router.HandleFunc("/api/v1/wallet/{walletId}/send",    makeHTTPHandleFunc(s.handleTranferWallet)).Methods("POST")
 	router.HandleFunc("/api/v1/wallet/{walletId}/history", makeHTTPHandleFunc(s.handleHistory)).Methods("GET")
 
-
-	log.Println("[+] server started at", time.Now().Format("2006-01-02 15:04:05"))
+	log.Println("[+] server started at", time.Now().Format("2006/01/02 15:04:05"))
 	log.Fatal(http.ListenAndServe(s.listenAddr, router))
 }
 

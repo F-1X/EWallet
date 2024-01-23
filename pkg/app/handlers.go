@@ -16,20 +16,9 @@ func (s *APIServer) handleCreateWallet(w http.ResponseWriter, r *http.Request) e
 	// проверка уникальности ID от коллизий.
 	// возвращается 400 ошибка "Ошибка в запросе" 
 	if err := s.storage.CheckUniqueWalletId(wallet_id); err != nil {
-		if err == model.ErrDuplicateWalletID {
-			for {
-				wallet_id = util.GenerateWallet()
-				if err := s.storage.CheckUniqueWalletId(wallet_id); err != model.ErrDuplicateWalletID {
-					if err != nil {
-						return WriteJSON(w,http.StatusBadRequest,model.ErrInvalidRequest)
-					}
-					break
-				}
-			}
-		} else {
 			return WriteJSON(w,http.StatusBadRequest,model.ErrInvalidRequest)
-		}
 	}
+
 	walletId, err  := s.storage.CreateWallet(wallet_id)
 	if err != nil {
 		return WriteJSON(w,http.StatusBadRequest, model.ErrInvalidRequest)
@@ -50,9 +39,8 @@ func (s *APIServer) handleGetWallet(w http.ResponseWriter, r *http.Request) erro
 		if err == model.ErrWalletNotFound{
 			return WriteJSON(w,http.StatusNotFound,model.ErrWalletNotFound)
 		}
-		return WriteJSON(w,http.StatusInternalServerError,"internal error get wallet")
+		return WriteJSON(w,http.StatusInternalServerError,err)
 	}
-
 
 	return WriteJSON(w, http.StatusOK, ConvertWalletToWalletRequest(walletId))
 }

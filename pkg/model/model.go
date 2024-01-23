@@ -24,6 +24,7 @@ var (
 	ErrDuplicateWalletID = errors.New("duplicate wallet")
 
 	ErrFromWalletNotFound = errors.New("Кошелек отправителя не найден")
+	
 	ErrToWalletNotFound = errors.New("Кошелек назначения не найден")
 
 	ErrHistoryEmpty = errors.New("История отсутствует")
@@ -43,7 +44,7 @@ type ApiMessage struct {
 	Message string           `json:"message"`
 }
 
-type WalletRequest struct {
+type WalletResponse struct {
 	ID      string           `json:"id"`
 	Balance decimal.Decimal  `json:"balance"`
 }
@@ -76,7 +77,7 @@ type TransactionRequest struct {
 	Amount  decimal.Decimal  `json:"amount"`
 }
 
-
+// Корректность передаваемых полех в теле запроса json хендлера перевода средств, транзакции
 func (tr *TransactionRequest) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage
 
