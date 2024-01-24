@@ -29,7 +29,7 @@ func WriteJSON(w http.ResponseWriter, status int, v interface{}) error {
 	return json.NewEncoder(w).Encode(v)
 }
 
-func ConvertWalletToWalletRequest(wallet *model.Wallet) *model.WalletResponse {
+func ConvertWalletToWalletResponce(wallet *model.Wallet) *model.WalletResponse {
     return &model.WalletResponse{
         ID:      wallet.WalletId,
         Balance: wallet.Balance,

@@ -19,12 +19,12 @@ func (s *APIServer) handleCreateWallet(w http.ResponseWriter, r *http.Request) e
 			return WriteJSON(w,http.StatusBadRequest,model.ErrInvalidRequest)
 	}
 
-	walletId, err  := s.storage.CreateWallet(wallet_id)
+	wallet, err  := s.storage.CreateWallet(wallet_id)
 	if err != nil {
 		return WriteJSON(w,http.StatusBadRequest, model.ErrInvalidRequest)
 	}
 
-	return WriteJSON(w,http.StatusOK,ConvertWalletToWalletRequest(walletId))
+	return WriteJSON(w,http.StatusOK,ConvertWalletToWalletResponce(wallet))
 }
 
 func (s *APIServer) handleGetWallet(w http.ResponseWriter, r *http.Request) error {
@@ -34,7 +34,7 @@ func (s *APIServer) handleGetWallet(w http.ResponseWriter, r *http.Request) erro
 		return WriteJSON(w,http.StatusNotFound, err)
 	}
 
-	walletId, err := s.storage.GetWallet(walletIdStr)
+	wallet, err := s.storage.GetWallet(walletIdStr)
 	if err != nil {
 		if err == model.ErrWalletNotFound{
 			return WriteJSON(w,http.StatusNotFound,model.ErrWalletNotFound)
@@ -42,7 +42,7 @@ func (s *APIServer) handleGetWallet(w http.ResponseWriter, r *http.Request) erro
 		return WriteJSON(w,http.StatusInternalServerError,err)
 	}
 
-	return WriteJSON(w, http.StatusOK, ConvertWalletToWalletRequest(walletId))
+	return WriteJSON(w, http.StatusOK, ConvertWalletToWalletResponce(wallet))
 }
 
 

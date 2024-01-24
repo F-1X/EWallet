@@ -77,6 +77,33 @@ type TransactionRequest struct {
 	Amount  decimal.Decimal  `json:"amount"`
 }
 
+func (hr *HistoryResponse) MarshalJSON() ([]byte,error) {
+	amountFloat, _ := hr.Amount.Float64()
+	return json.Marshal(struct {
+		Time      time.Time  `json:"id"`
+		From 	  string     `json:"from"`
+		To        string     `json:"to"`
+		Balance   float64    `json:"amount"`
+	}{
+		Time:      hr.Time,
+		From:	   hr.From,
+		To:        hr.To,
+		Balance:   amountFloat,
+	})
+}
+
+func (wr *WalletResponse) MarshalJSON() ([]byte,error) {
+	balanceFloat, _ := wr.Balance.Float64()
+	return json.Marshal(struct {
+		ID      string  `json:"id"`
+		Balance float64 `json:"balance"`
+	}{
+		ID:      wr.ID,
+		Balance: balanceFloat,
+	})
+}
+
+
 // Корректность передаваемых полех в теле запроса json хендлера перевода средств, транзакции
 func (tr *TransactionRequest) UnmarshalJSON(data []byte) error {
 	var raw map[string]json.RawMessage

@@ -1,4 +1,5 @@
 build:
+	docker volume create pg_data
 	docker-compose -f docker-compose.yml up --build
 
 rebuild:
@@ -7,5 +8,6 @@ rebuild:
 
 delete:
 	docker-compose down
+	docker volume rm pg_data
 	docker image rm api
 	docker image rm postgres
