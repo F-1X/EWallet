@@ -18,8 +18,8 @@
 
 ## Tech
 
-- Postgres, для database/sql используется драйвер pq (github.com/lib/pq)  
-- mux (github.com/gorilla/mux)
+- Postgres, pq
+- mux 
 - docker
 
 ## Spec
