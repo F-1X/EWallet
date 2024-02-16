@@ -1,3 +1,11 @@
+appbuild:
+	go build ./cmd/app
+
+apprun: appbuild
+	app.exe
+
+	
+
 build:
 	docker volume create pg_data
 	docker-compose -f docker-compose.yml up --build

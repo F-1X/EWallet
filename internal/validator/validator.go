@@ -6,17 +6,17 @@ import (
 )
 
 var (
-	isValidWalletId= regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString
+	isValidWalletId = regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString
 )
 
 func ValidateWallet(value string) error {
-
 	if len(value) != 32 {
-		return model.ErrIncorrectWallet
+		return model.ErrIncorrectWallet.Error()
 	}
 
 	if !isValidWalletId(value) {
-		return model.ErrIncorrectWallet
+		return model.ErrIncorrectWallet.Error()
 	}
+
 	return nil
 }

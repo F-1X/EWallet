@@ -3,39 +3,43 @@ package app
 import (
 	"encoding/json"
 	"ewallet/pkg/model"
+	"log"
 	"net/http"
 )
-
 
 type apiFunc func(http.ResponseWriter, *http.Request) error
 
 func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := f(w,r); err != nil {
-			WriteJSON(w, http.StatusBadRequest, err.Error())
+		if err := f(w, r); err != nil {
+			WriteJSON(w, err.Error())
 		}
 	}
 }
 
-func WriteJSON(w http.ResponseWriter, status int, v interface{}) error {
-	w.WriteHeader(status)
-	w.Header().Add("Content-Type","application/json")
+func WriteJSON(w http.ResponseWriter, v interface{}) error {
+	log.Println("some magic in writeJSon")
+	w.Header().Add("Content-Type", "application/json")
 	switch t := v.(type) {
-	case string:
-		return json.NewEncoder(w).Encode(model.ApiMessage{Message:t})
-	case error:
-		return json.NewEncoder(w).Encode(model.ApiError{Error: t.Error()})
+	case model.ApiMessage:
+		w.WriteHeader(t.ApiStatus)
+		json.NewEncoder(w).Encode(model.ApiMessage{ApiMessage: t.String()})
+
+	case model.ApiError:
+		w.WriteHeader(t.ApiStatus)
+		json.NewEncoder(w).Encode(model.ApiError{ApiError: t.String()})
+
 	}
+	w.WriteHeader(http.StatusOK)
 	return json.NewEncoder(w).Encode(v)
 }
 
 func ConvertWalletToWalletResponce(wallet *model.Wallet) *model.WalletResponse {
-    return &model.WalletResponse{
-        ID:      wallet.WalletId,
-        Balance: wallet.Balance,
-    }
+	return &model.WalletResponse{
+		ID:      wallet.WalletId,
+		Balance: wallet.Balance,
+	}
 }
-
 
 func ConvertTransactionToHistoryResponse(transactions []model.Transaction) []model.HistoryResponse {
 	var historyResponses []model.HistoryResponse

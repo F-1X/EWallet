@@ -1,18 +1,18 @@
 version: '3.1'
 
 services:
-  web:
-    container_name: api
-    build:
-      context: ./
-      dockerfile: docker/Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    restart: always
-    volumes:
-      - ./:/app
+  # web:
+  #   container_name: api
+  #   build:
+  #     context: ./
+  #     dockerfile: docker/Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   restart: always
+  #   volumes:
+  #     - ./:/app
 
   postgres:
     container_name: postgres

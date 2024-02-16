@@ -11,14 +11,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-
-func main(){
+func main() {
 	if err := config.InitConfig(); err != nil {
 		log.Fatal(err)
 	}
 
 	DB_URL := viper.GetString("db.url")
-
+	log.Println(DB_URL)
 	store, err := postgres.NewPostgres(DB_URL)
 	if err != nil {
 		log.Fatal("err: failed connection to postgres")
@@ -27,11 +26,15 @@ func main(){
 	defer store.DB.Close()
 
 	if err = store.InitTables(); err != nil {
-		log.Fatal("err: failed to init tables",err)
+		log.Fatal("err: failed to init tables", err)
 	}
 
 	listenAddr := viper.GetString("listenAddr")
+
 	server := app.NewAPIServer(listenAddr, store)
+	router := server.NewRouter()
+	server.BindRouter(router)
+	
 	server.RunServer()
 
 }

@@ -9,90 +9,56 @@ import (
 )
 
 
-var (
-	
-	ErrInsufficientFuns = errors.New("not enough money on wallet")
-
-	ErrIncorrectWalletOrTransactionError = errors.New("Ошибка в пользовательском запросе или ошибка перевода")
-
-	ErrWalletNotFound = errors.New("Исходящий кошелек не найден")
-
-	ErrIncorrectWallet = errors.New("Некоректная запись кошелька")
-
-	ErrInvalidRequest = errors.New("Ошибка в запросе")
-
-	ErrDuplicateWalletID = errors.New("duplicate wallet")
-
-	ErrFromWalletNotFound = errors.New("Кошелек отправителя не найден")
-	
-	ErrToWalletNotFound = errors.New("Кошелек назначения не найден")
-
-	ErrHistoryEmpty = errors.New("История отсутствует")
-
-	ErrLoadConfig = errors.New("failed to load config")
-
-	TransactionSuccess = "Перевод успешно проведен"
-	WalletCreated = "Кошелек создан"
-)
-
-
-type ApiError struct {
-	Error  string            `json:"error"`
-}
-
-type ApiMessage struct {
-	Message string           `json:"message"`
-}
 
 type WalletResponse struct {
-	ID      string           `json:"id"`
-	Balance decimal.Decimal  `json:"balance"`
+	ID      string          `json:"id"`
+	Balance decimal.Decimal `json:"balance"`
 }
 
 type Wallet struct {
-	ID       string            
-	WalletId string          `json:"id"`
-	Balance decimal.Decimal  `json:"balance"`
-	Created_at time.Time    
-	Updated_at time.Time   
+	ID         string
+	WalletId   string          `json:"id"`
+	Balance    decimal.Decimal `json:"balance"`
+	Created_at time.Time
+	Updated_at time.Time
 }
 
 type Transaction struct {
-	ID      string           `json:"id"`
-	From    string           `json:"from"`
-	To  	string           `json:"to"`
-	Amount  decimal.Decimal  `json:"amount"`
-	Time    time.Time        `json:"transfer_time"`
+	ID     string          `json:"id"`
+	From   string          `json:"from"`
+	To     string          `json:"to"`
+	Amount decimal.Decimal `json:"amount"`
+	Time   time.Time       `json:"transfer_time"`
 }
 
 type HistoryResponse struct {
-	Time   time.Time         `json:"time"`
-	From   string            `json:"from"`
-	To     string            `json:"to"`
-	Amount decimal.Decimal   `json:"amount"`
+	Time   time.Time       `json:"time"`
+	From   string          `json:"from"`
+	To     string          `json:"to"`
+	Amount decimal.Decimal `json:"amount"`
 }
 
 type TransactionRequest struct {
-	ToID  	string           `json:"to"`
-	Amount  decimal.Decimal  `json:"amount"`
+	ToID   string          `json:"to"`
+	Amount decimal.Decimal `json:"amount"`
 }
 
-func (hr *HistoryResponse) MarshalJSON() ([]byte,error) {
+func (hr *HistoryResponse) MarshalJSON() ([]byte, error) {
 	amountFloat, _ := hr.Amount.Float64()
 	return json.Marshal(struct {
-		Time      time.Time  `json:"id"`
-		From 	  string     `json:"from"`
-		To        string     `json:"to"`
-		Balance   float64    `json:"amount"`
+		Time    time.Time `json:"id"`
+		From    string    `json:"from"`
+		To      string    `json:"to"`
+		Balance float64   `json:"amount"`
 	}{
-		Time:      hr.Time,
-		From:	   hr.From,
-		To:        hr.To,
-		Balance:   amountFloat,
+		Time:    hr.Time,
+		From:    hr.From,
+		To:      hr.To,
+		Balance: amountFloat,
 	})
 }
 
-func (wr *WalletResponse) MarshalJSON() ([]byte,error) {
+func (wr *WalletResponse) MarshalJSON() ([]byte, error) {
 	balanceFloat, _ := wr.Balance.Float64()
 	return json.Marshal(struct {
 		ID      string  `json:"id"`
@@ -102,7 +68,6 @@ func (wr *WalletResponse) MarshalJSON() ([]byte,error) {
 		Balance: balanceFloat,
 	})
 }
-
 
 // Корректность передаваемых полех в теле запроса json хендлера перевода средств, транзакции
 func (tr *TransactionRequest) UnmarshalJSON(data []byte) error {

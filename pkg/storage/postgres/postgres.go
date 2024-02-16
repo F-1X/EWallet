@@ -96,7 +96,7 @@ func (s *Postgres) CheckUniqueWalletId(wallet_id string) error {
 	}
 	
 	if existingWalletId != "" {
-        return model.ErrDuplicateWalletID
+        return model.ErrDuplicateWalletID.Error()
     }
 	
 	return nil
@@ -116,7 +116,7 @@ func (s *Postgres) GetWallet(wallet_id string) (*model.Wallet, error) {
 		return scanIntoWallet(rows)
 	}
 	
-	return nil , model.ErrIncorrectWallet
+	return nil , model.ErrIncorrectWallet.Error()
 }
 
 func (s *Postgres) Transaction(fromID string, toID string, amount decimal.Decimal) (*model.Transaction, error)  {
@@ -138,7 +138,7 @@ func (s *Postgres) Transaction(fromID string, toID string, amount decimal.Decima
 	err = tx.QueryRow("SELECT balance FROM wallet WHERE wallet_id = $1", fromID).Scan(&fromBalance)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, model.ErrFromWalletNotFound
+			return nil, model.ErrFromWalletNotFound.Error()
 		}
 		tx.Rollback()
 		return nil,err
@@ -146,7 +146,7 @@ func (s *Postgres) Transaction(fromID string, toID string, amount decimal.Decima
 	if fromBalance.LessThan(amount) {
 		log.Println("Balance " + fromBalance.String() + " less then amount " + amount.String() + " fromID: " + fromID)
 		tx.Rollback()
-		return nil, model.ErrIncorrectWalletOrTransactionError
+		return nil, model.ErrIncorrectWalletOrTransactionError.Error()
 	}
 
 	fromBalance = fromBalance.Sub(amount)
@@ -160,7 +160,7 @@ func (s *Postgres) Transaction(fromID string, toID string, amount decimal.Decima
 	err = tx.QueryRow("SELECT balance FROM wallet WHERE wallet_id = $1", toID).Scan(&toBalance)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, model.ErrToWalletNotFound
+			return nil, model.ErrToWalletNotFound.Error()
 		}
 		tx.Rollback()
 		return nil,err
@@ -230,7 +230,7 @@ func (s *Postgres) History(fromID string) (*[]model.Transaction, error)  {
 	}
 
 	if len(transactions) == 0 {
-		return nil, model.ErrHistoryEmpty
+		return nil, model.ErrHistoryEmpty.Error()
 	}
 	
 	return &transactions, nil
