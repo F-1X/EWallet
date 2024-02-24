@@ -1,3 +1,7 @@
+# Updates
+added sessions and login handlers
+(frontend - not finished, but handlers are worked)
+
 # Usage 
 
 Для запуска приложения:
