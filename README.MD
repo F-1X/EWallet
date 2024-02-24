@@ -1,6 +1,6 @@
 # Updates
 added sessions and login handlers
-(frontend - not finished, but handlers are worked)
+(frontend - not finished, but handlers worked)
 
 # Usage 
 
